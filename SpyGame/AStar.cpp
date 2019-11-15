@@ -188,7 +188,7 @@ void AStar::SetBackToStartingPosition()
 void AStar::Update()
 {
 	// Get vector size.
-	int size = m_coordinates.size();
+	int size = (int)m_coordinates.size();
 
 	// If index is less than size, switch to new location.
 	if (m_index < size)
