@@ -4,6 +4,7 @@
 
 Keep track of how many times the player is detected, if they were in fact detected by any enemy at all. Follows SRP.
 
+
 																				Class member variables:
 
 1) Reasoning for m_detectionLimit:
@@ -42,7 +43,6 @@ Display on the screen.
 5) Reasoning for GetCurrentTimesDetected:
 
 Display on screen.
-
 
 
 																				Class functions (private):

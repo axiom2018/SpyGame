@@ -10,7 +10,7 @@
 #include <iostream>
 #include <list>
 
-TwoPoint::TwoPoint(const int & gridWidth, const int & gridHeight, FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * m_pGameUpdatesMediator)
+TwoPoint::TwoPoint(FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator)
 {
 	// Save the find vacant position pointer.
 	m_pFindVacantPosition = pFindVacantPosition;
@@ -25,10 +25,10 @@ TwoPoint::TwoPoint(const int & gridWidth, const int & gridHeight, FindVacantPosi
 	m_pDirectionalSystem = new DirectionalSystem(&m_x, &m_y);
 
 	// Allocate for line of sight so player can get caught.
-	m_pLineOfSight = new LineOfSight(m_pDirectionalSystem->GetChar(), gridWidth, gridHeight, &m_x, &m_y, k_sightDistance, m_pGameUpdatesMediator);
+	m_pLineOfSight = new LineOfSight(m_pDirectionalSystem->GetChar(), &m_x, &m_y, k_sightDistance, pGameUpdatesMediator);
 
 	// Allocate for A star.
-	m_pAStar = new AStar(gridWidth, gridHeight, m_endPointX, m_endPointY, &m_x, &m_y, m_pFindVacantPosition->GetGameUpdatesMediator());
+	m_pAStar = new AStar(m_endPointX, m_endPointY, &m_x, &m_y, m_pFindVacantPosition->GetGameUpdatesMediator());
 }
 
 bool TwoPoint::Draw(const int & x, const int & y)
@@ -67,10 +67,10 @@ void TwoPoint::ResetEnemyData()
 	m_pFindVacantPosition->GetPositionOnGrid(&m_endPointX, &m_endPointY);
 
 	// Update line of sight.
-	m_pLineOfSight->UpdateDimensions(m_pFindVacantPosition->GetWidth(), m_pFindVacantPosition->GetHeight());
+	m_pLineOfSight->UpdateDimensions();
 
 	// Reset to the start of the path in A star.
-	m_pAStar->ResetPath(m_endPointX, m_endPointY, m_pFindVacantPosition->GetWidth(), m_pFindVacantPosition->GetHeight());
+	m_pAStar->ResetPath(m_endPointX, m_endPointY);
 }
 
 void TwoPoint::BackToStartingPosition()

@@ -46,7 +46,7 @@ char LevelTarget::GetLevelTarget() const
 bool LevelTarget::Update()
 {
 	// First get the player coordinates.
-	std::pair<int, int> coords = m_pGameUpdatesMediator->ReceiveCoordinates(this);
+	std::pair<int, int> coords = m_pGameUpdatesMediator->ReceiveCoordinates();
 
 	// Check if they match the level target coordinates, if so, return true.
 	if (m_x == coords.first && m_y == coords.second)

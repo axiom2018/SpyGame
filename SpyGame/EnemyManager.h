@@ -29,8 +29,8 @@ Keep note of the width and height of the grid and pass to the enemies.
 
 5) Reasoning for m_minStartingEnemies:
 
-When we first start the game, we'll have 2 enemies, player then beats the level, send the enemies to the pool, increase the enemies total to 3. We'll get the 2 enemies from
-the pool, plus create one.
+When we first start the game, we'll have 2 enemies, player then beats the level, send the enemies to the pool, increase the enemies total to 3. We'll
+get the 2 enemies from the pool, plus create one.
 
 
 6) Reasoning for m_totalLevels:
@@ -103,10 +103,10 @@ private:
 	int m_minStartingEnemies;
 	int m_totalLevels;
 public:
-	EnemyManager(const int& gridWidth, const int& gridHeight, int totalLevels, class GameUpdatesMediator * pGameUpdatesMediator, class FindVacantPosition * pFindVacantPosition);
+	EnemyManager(const int& totalLevels, class GameUpdatesMediator * pGameUpdatesMediator, class FindVacantPosition * pFindVacantPosition);
 	bool Draw(const int& x, const int& y);
 	void SendEnemiesToPool();
-	void GetEnemiesFromPool(const int& gridWidth, const int& gridHeight);
+	void GetEnemiesFromPool();
 	void ClearEnemyPositions();
 	void IncreaseTotalEnemies();
 	bool Update();

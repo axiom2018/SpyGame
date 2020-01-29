@@ -76,8 +76,8 @@ private:
 
 	bool IsInRange(const int& x, const int& y) const;
 public:
-	FindVacantPosition(const int& gridWidth, const int& gridHeight, class GameUpdatesMediator * pGameUpdatesMediator);
-	void ResetGridDimensions(const int& gridWidth, const int& gridHeight);
+	FindVacantPosition(class GameUpdatesMediator * pGameUpdatesMediator);
+	void ResetGridDimensions();
 	void GetPositionOnGrid(int * pX, int * pY);
 	void EmptyPositions() const;
 	class GameUpdatesMediator * GetGameUpdatesMediator() const;

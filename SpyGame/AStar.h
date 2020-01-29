@@ -1,13 +1,11 @@
 #pragma once
-#include "Point.h"
-#include "Node.h"
 #include "Colleague.h"
 #include <list>
 
 /* Reasoning for this class:
 
-This A * algorithm is popular from my research and is an improvement on dijkstra's algorithm. I'll be honest when I say it took me a full 2 weeks to understand this algorithm so 
-finally seeing the result is so amazing to me.
+This A * algorithm is popular from my research and is an improvement on dijkstra's algorithm. I'll be honest when I say it took me a full 2 weeks to understand 
+this algorithm so finally seeing the result is so amazing to me.
 
 																				Class member variables:
 
@@ -28,8 +26,8 @@ The enemies x and y pointers to tell to assign it new values every update, the v
 
 4) Reasoning for m_coordinates:
 
-Save the coordinates in vector format specifically. A * has us use the nodes when the algorithm is immediately done to traverse. But we want the ability to traverse the path
-forwards, then backwards, using the vector allows this with ease.
+Save the coordinates in vector format specifically. A * has us use the nodes when the algorithm is immediately done to traverse. But we want the ability 
+to traverse the path forwards, then backwards, using the vector allows this with ease.
 
 
 5) Reasoning for m_index:
@@ -77,8 +75,8 @@ Complete the A * algorithm to find us the best path we can.
 class AStar : public Colleague
 {
 private:
-	Node * m_pStart;
-	Node * m_pEnd;
+	struct Node * m_pStart;
+	struct Node * m_pEnd;
 	int m_width;
 	int m_height;
 	int * m_pX;
@@ -89,8 +87,8 @@ private:
 	void SolveAStar(std::vector<std::pair<int, int>> * pCoordVec);
 	void SetNodesAndSolve(const int& endX, const int& endY);
 public:
-	AStar(const int& gridWidth, const int& gridHeight, const int& endX, const int& endY, int * pX, int * pY, class GameUpdatesMediator * pGameUpdatesMediator);
-	void ResetPath(const int& endX, const int& endY, const int& gridWidth, const int& gridHeight);
+	AStar(const int& endX, const int& endY, int * pX, int * pY, class GameUpdatesMediator * pGameUpdatesMediator);
+	void ResetPath(const int& endX, const int& endY);
 	void SetBackToStartingPosition();
 	void Update();
 };

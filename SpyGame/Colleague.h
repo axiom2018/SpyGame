@@ -17,4 +17,7 @@ public:
 	virtual bool ResetWallAtPosition(const int& x, const int& y) const { return false; }
 	virtual Node * Get2DGrid() const { return nullptr; }
 	virtual bool ColorGridPosition(const int& x, const int& y) { return false; }
+	
+	// Testing function for getting the width and height of grid for other entities to use.
+	virtual std::pair<int, int> GetGridWidthAndHeight() const { return std::make_pair(k_defaultValue, k_defaultValue); }
 };

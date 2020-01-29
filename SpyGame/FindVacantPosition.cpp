@@ -2,17 +2,20 @@
 #include "GameUpdatesMediator.h"
 #include "Positions.h"
 
-FindVacantPosition::FindVacantPosition(const int& gridWidth, const int& gridHeight, GameUpdatesMediator * pGameUpdatesMediator)
+FindVacantPosition::FindVacantPosition(GameUpdatesMediator * pGameUpdatesMediator)
 {
-	// Initialize the width and height variables.
-	m_gridWidth = gridWidth;
-	m_gridHeight = gridHeight;
-
 	// Set mediator.
 	m_pGameUpdatesMediator = pGameUpdatesMediator;
 
 	// Register with mediator.
 	m_pGameUpdatesMediator->Register(this);
+
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+
+	// Initialize the width and height variables.
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
 
 	// Allocate positions.
 	m_pPositions = new Positions;
@@ -33,11 +36,14 @@ bool FindVacantPosition::IsInRange(const int & x, const int & y) const
 	return false;
 }
 
-void FindVacantPosition::ResetGridDimensions(const int & gridWidth, const int & gridHeight)
+void FindVacantPosition::ResetGridDimensions()
 {
-	// Reset the width and height variables.
-	m_gridWidth = gridWidth;
-	m_gridHeight = gridHeight;
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+
+	// Initialize the width and height variables.
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
 }
 
 // Get a random point on the current grid.
@@ -58,7 +64,7 @@ void FindVacantPosition::GetPositionOnGrid(int * pX, int * pY)
 		} while (IsInRange(position.first, position.second)); // Make sure the x and y are in bounds.
 
 		// Also check if this position matches player position.
-		std::pair<int, int> playerPos = m_pGameUpdatesMediator->ReceiveCoordinates(this);
+		std::pair<int, int> playerPos = m_pGameUpdatesMediator->ReceiveCoordinates();
 
 		if (playerPos.first == position.first && playerPos.second == position.second)
 		{

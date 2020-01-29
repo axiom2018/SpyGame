@@ -72,14 +72,14 @@ private:
 	int m_gridWidth;
 	int m_gridHeight;
 public:
-	Player(const int& gridWidth, const int& gridHeight, class GameUpdatesMediator * pGameUpdatesMediator);
+	Player(class GameUpdatesMediator * pGameUpdatesMediator);
 	void MoveUp();
 	void MoveDown();
 	void MoveLeft();
 	void MoveRight();
 	bool GetInput() const;
 	bool Draw(const int& x, const int& y);
-	void ResetPosition(const int& gridWidth, const int& gridHeight);
+	void ResetPosition();
 	virtual std::pair<int, int> ReturnRequestedCoordinates() override;
 	~Player();
 };

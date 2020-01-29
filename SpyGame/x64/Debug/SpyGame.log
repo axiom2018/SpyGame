@@ -1,2 +1,10 @@
-﻿  AStar.cpp
+﻿  EnemyFactory.cpp
+  EnemyManager.cpp
+  EnemyObjectPool.cpp
+  EnemyQueueLinkedList.cpp
+  LineOfSight.cpp
+  Stationary.cpp
+  StationaryRotation.cpp
+  TwoPoint.cpp
+  Generating Code...
   SpyGame.vcxproj -> C:\Users\bgt\source\repos\SpyGame\x64\Debug\SpyGame.exe

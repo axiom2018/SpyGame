@@ -117,7 +117,7 @@ bool EnemyQueueLinkedList::Update()
 	EnemyNode * pEN = m_pFront;
 
 	// Test receiving the coordinates.
-	std::pair<int, int> coords = m_pGameUpdatesMediator->ReceiveCoordinates(this);
+	std::pair<int, int> coords = m_pGameUpdatesMediator->ReceiveCoordinates();
 
 	// Loop.
 	while (pEN)

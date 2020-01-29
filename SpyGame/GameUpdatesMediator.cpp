@@ -18,7 +18,7 @@ void GameUpdatesMediator::Unregister(Colleague * pColleague)
 	}
 }
 
-std::pair<int, int> GameUpdatesMediator::ReceiveCoordinates(Colleague * pColleague)
+std::pair<int, int> GameUpdatesMediator::ReceiveCoordinates()
 {
 	// Loop over the colleagues.
 	for (unsigned int i = 0; i < m_pColleagues.size(); ++i)
@@ -124,4 +124,23 @@ Node * GameUpdatesMediator::GetGrid() const
 	}
 
 	return nullptr;
+}
+
+// Testing function for getting the width and height of grid for other entities to use.
+std::pair<int, int> GameUpdatesMediator::GetWidthAndHeightOfGrid() const
+{
+	// Loop over the colleagues.
+	for (unsigned int i = 0; i < m_pColleagues.size(); ++i)
+	{
+		// Attempt to get coordinates from the PROPER class that should get this request.
+		std::pair<int, int> coords = m_pColleagues.at(i)->GetGridWidthAndHeight();
+
+		// If the coordinates returned are NOT -1's, the right class processed the request, exit function by returning coordinates.
+		if (coords.first != k_defaultValue && coords.second != k_defaultValue)
+		{
+			return coords;
+		}
+	}
+
+	return std::pair<int, int>();
 }

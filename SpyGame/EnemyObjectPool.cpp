@@ -22,7 +22,7 @@ Enemy * EnemyObjectPool::GetEnemy()
 	else if (m_pResources.size() > 1)
 	{
 		// Get the size.
-		int size = m_pResources.size();
+		int size = (int)m_pResources.size();
 
 		// Get the random value according to the size. Ex: If we have 2 in the vector, we'll either get 0 or 1 for an index position.
 		int randomValue = 0 + (rand() % size);

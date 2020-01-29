@@ -42,10 +42,6 @@ This will be assigned the STARTING position where we'll look. If enemy is facing
 See how much space is left we're allowed to check before the algorithm ends.
 
 
-8) Reasoning for m_pGameUpdatesMediator:
-
-For wall checks.
-
 
 																				Class functions:
 																				
@@ -100,16 +96,14 @@ private:
 	int m_travelX;
 	int m_travelY;
 	int m_travelCounter;
-	class GameUpdatesMediator * m_pGameUpdatesMediator;
 
 	bool CheckForWall() const;
 	void DecrementTravel();
 	bool IsInBounds();
 	void UpdateDirection();
 public:
-	LineOfSight(char * pEnemyChar, const int& worldWidth, const int& worldHeight, int * pEnemyX, int * pEnemyY, const int& sightDistance, 
-		class GameUpdatesMediator * pGameUpdatesMediator);
+	LineOfSight(char * pEnemyChar, int * pEnemyX, int * pEnemyY, const int& sightDistance, class GameUpdatesMediator * pGameUpdatesMediator);
 	bool Update(const int& playerX, const int& playerY);
-	void UpdateDimensions(const int& worldWidth, const int& worldHeight);
+	void UpdateDimensions();
 };
 

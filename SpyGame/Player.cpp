@@ -6,11 +6,7 @@
 #include <iostream>
 
 // Initialize the player position at the beginning. As well as the maximum grid width and height to insure we get the proper boundaries for movement.
-Player::Player(const int& gridWidth, const int& gridHeight, GameUpdatesMediator * pGameUpdatesMediator) :
-	m_x(gridWidth - 1),
-	m_y(gridHeight - 1),
-	m_gridWidth(gridWidth),
-	m_gridHeight(gridHeight)
+Player::Player(GameUpdatesMediator * pGameUpdatesMediator) 
 {
 	// Initialize the controls system.
 	m_pControlsInvoker = new ControlsInvoker(this);
@@ -20,6 +16,17 @@ Player::Player(const int& gridWidth, const int& gridHeight, GameUpdatesMediator 
 
 	// Register with mediator.
 	m_pGameUpdatesMediator->Register(this);
+
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+
+	// Set the position of the player to ALWAYS start bottom right.
+	m_x = size.first - 1;
+	m_y = size.second - 1;
+
+	// Set the width and the height variables to use in the players movement process.
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
 }
 
 void Player::MoveUp()
@@ -95,11 +102,12 @@ bool Player::Draw(const int & x, const int & y)
 	return false;
 }
 
-void Player::ResetPosition(const int& gridWidth, const int& gridHeight)
+void Player::ResetPosition()
 {
-	// Save the new width and height.
-	m_gridWidth = gridWidth;
-	m_gridHeight = gridHeight;
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
 
 	// Get new x and y.
 	m_x = m_gridWidth - 1;

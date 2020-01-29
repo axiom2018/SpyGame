@@ -5,7 +5,7 @@
 #include "World.h"
 #include <iostream>
 
-StationaryRotation::StationaryRotation(const int& gridWidth, const int& gridHeight, FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator)
+StationaryRotation::StationaryRotation(FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator)
 {
 	// Save the find vacant position pointer.
 	m_pFindVacantPosition = pFindVacantPosition;
@@ -17,7 +17,7 @@ StationaryRotation::StationaryRotation(const int& gridWidth, const int& gridHeig
 	m_pDirectionalSystem = new DirectionalSystem(&m_x, &m_y);
 
 	// Allocate for line of sight so player can get caught.
-	m_pLineOfSight = new LineOfSight(m_pDirectionalSystem->GetChar(), gridWidth, gridHeight, &m_x, &m_y, k_sightDistance, pGameUpdatesMediator);
+	m_pLineOfSight = new LineOfSight(m_pDirectionalSystem->GetChar(), &m_x, &m_y, k_sightDistance, pGameUpdatesMediator);
 }
 
 bool StationaryRotation::Draw(const int & x, const int & y)
@@ -38,7 +38,7 @@ void StationaryRotation::ResetEnemyData()
 	m_pFindVacantPosition->GetPositionOnGrid(&m_x, &m_y);
 
 	// Allocate for line of sight so player can get caught.
-	m_pLineOfSight->UpdateDimensions(m_pFindVacantPosition->GetWidth(), m_pFindVacantPosition->GetHeight());
+	m_pLineOfSight->UpdateDimensions();
 }
 
 bool StationaryRotation::Update(const int& playerX, const int& playerY)

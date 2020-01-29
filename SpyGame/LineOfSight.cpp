@@ -4,15 +4,21 @@
 #include <iostream>
 #include <conio.h>
 
-LineOfSight::LineOfSight(char * pEnemyChar, const int& worldWidth, const int& worldHeight, int * pEnemyX, int * pEnemyY, const int& sightDistance,
-	GameUpdatesMediator * pGameUpdatesMediator)
+LineOfSight::LineOfSight(char * pEnemyChar, int * pEnemyX, int * pEnemyY, const int& sightDistance, GameUpdatesMediator * pGameUpdatesMediator)
 {
 	// Save the char to know it's direction later.
 	m_pEnemyChar = pEnemyChar;
 
-	// Set the dimensions.
-	m_worldWidth = worldWidth;
-	m_worldHeight = worldHeight;
+	// Set mediator.
+	m_pGameUpdatesMediator = pGameUpdatesMediator;
+
+	// Register with mediator.
+	m_pGameUpdatesMediator->Register(this);
+
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_worldWidth = size.first;
+	m_worldHeight = size.second;
 
 	// Save the enemy position.
 	m_pEnemyX = pEnemyX;
@@ -23,12 +29,6 @@ LineOfSight::LineOfSight(char * pEnemyChar, const int& worldWidth, const int& wo
 
 	// Set the counter to the sight distance.
 	m_travelCounter = m_sightDistance;
-
-	// Save the mediator.
-	m_pGameUpdatesMediator = pGameUpdatesMediator;
-
-	// Register with it.
-	m_pGameUpdatesMediator->Register(this);
 }
 
 void LineOfSight::UpdateDirection()
@@ -182,9 +182,9 @@ bool LineOfSight::Update(const int& playerX, const int& playerY)
 	return false;
 }
 
-void LineOfSight::UpdateDimensions(const int & worldWidth, const int & worldHeight)
+void LineOfSight::UpdateDimensions()
 {
-	// Reset the dimensions.
-	m_worldWidth = worldWidth;
-	m_worldHeight = worldHeight;
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_worldWidth = size.first;
+	m_worldHeight = size.second;
 }

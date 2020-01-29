@@ -33,10 +33,10 @@ World::World()
 	m_pLevelTarget = new LevelTarget(m_pGameUpdatesMediator);
 
 	// Allocate player.
-	m_pPlayer = new Player(m_gridX, m_gridY, m_pGameUpdatesMediator);
+	m_pPlayer = new Player(m_pGameUpdatesMediator);
 
 	// Allocate find vacant position.
-	m_pFindVacantPosition = new FindVacantPosition(m_gridX, m_gridY, m_pGameUpdatesMediator);
+	m_pFindVacantPosition = new FindVacantPosition(m_pGameUpdatesMediator);
 
 	// Allocate max levels and pass in however many levels desired before the game ends.
 	m_pMaxLevels = new MaxLevels(3);
@@ -117,13 +117,13 @@ void World::GenerateNewLevel()
 	BuildGrid();
 
 	// Reset the dimensions in find vacant position.
-	m_pFindVacantPosition->ResetGridDimensions(m_gridX, m_gridY);
+	m_pFindVacantPosition->ResetGridDimensions();
 
 	// Set up some new blocks.
-	m_pBlockManager->CreateNewBlocks(m_gridX, m_gridY);
+	m_pBlockManager->CreateNewBlocks();
 
 	// Reset the position of the player.
-	m_pPlayer->ResetPosition(m_gridX, m_gridY);
+	m_pPlayer->ResetPosition();
 
 	// Clear the enemy positions.
 	m_pEnemyManager->ClearEnemyPositions();
@@ -132,7 +132,7 @@ void World::GenerateNewLevel()
 	m_pEnemyManager->IncreaseTotalEnemies();
 
 	// Re use enemies.
-	m_pEnemyManager->GetEnemiesFromPool(m_gridX, m_gridY);
+	m_pEnemyManager->GetEnemiesFromPool();
 
 	// Wipe screen.
 	system("cls");
@@ -141,7 +141,7 @@ void World::GenerateNewLevel()
 void World::RestartLevel()
 {
 	// Reset the position of the player.
-	m_pPlayer->ResetPosition(m_gridX, m_gridY);
+	m_pPlayer->ResetPosition();
 
 	// Reset the enemies as well.
 	m_pEnemyManager->ResetEnemyPositions();
@@ -262,10 +262,10 @@ void World::PrintGrid() const
 void World::Update()
 {
 	// Allocate block manager.
-	m_pBlockManager = new BlockManager(m_gridX, m_gridY, m_pGameUpdatesMediator);
+	m_pBlockManager = new BlockManager(m_pGameUpdatesMediator);
 
 	// Allocate enemy manager.
-	m_pEnemyManager = new EnemyManager(m_gridX, m_gridY, m_pMaxLevels->GetFinalLevel(), m_pGameUpdatesMediator, m_pFindVacantPosition);
+	m_pEnemyManager = new EnemyManager(m_pMaxLevels->GetFinalLevel(), m_pGameUpdatesMediator, m_pFindVacantPosition);
 
 	// Loop.
 	while (true)
@@ -336,8 +336,6 @@ bool World::PlaceWallAtPosition(const int & x, const int & y) const
 	m_pGrid[y * m_gridY + x].m_displayCharacter = k_obstacle;
 	m_pGrid[y * m_gridY + x].m_obstacle = true;
 
-	// ClearScreenAndShowCurrentGrid();
-
 	return true;
 }
 
@@ -364,7 +362,6 @@ bool World::IsLevelTargetAtPosition(const int & x, const int & y) const
 bool World::ResetWallAtPosition(const int & x, const int & y) const
 {
 	m_pGrid[y * m_gridY + x].m_displayCharacter = '.';
-	// ClearScreenAndShowCurrentGrid();
 
 	return true;
 }
@@ -372,6 +369,11 @@ bool World::ResetWallAtPosition(const int & x, const int & y) const
 Node * World::Get2DGrid() const
 {
 	return m_pGrid;
+}
+
+std::pair<int, int> World::GetGridWidthAndHeight() const
+{
+	return std::make_pair(m_gridX, m_gridY);
 }
 
 void World::Delete()

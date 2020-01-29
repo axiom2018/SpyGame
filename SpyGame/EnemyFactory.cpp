@@ -5,17 +5,16 @@
 #include "FindVacantPosition.h"
 #include "Node.h"
 
-Enemy * EnemyFactory::CreateEnemy(const int & choice, const int& gridWidth, const int& gridHeight, FindVacantPosition * pFindVacantPosition, 
-	class GameUpdatesMediator * pGameUpdatesMediator)
+Enemy * EnemyFactory::CreateEnemy(const int & choice, FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator)
 {
 	switch (choice)
 	{
 	case 0:
-		return new Stationary(gridWidth, gridHeight, pFindVacantPosition, pGameUpdatesMediator);
+		return new Stationary(pFindVacantPosition, pGameUpdatesMediator);
 	case 1:
-		return new StationaryRotation(gridWidth, gridHeight, pFindVacantPosition, pGameUpdatesMediator);
+		return new StationaryRotation(pFindVacantPosition, pGameUpdatesMediator);
 	case 2:
-		return new TwoPoint(gridWidth, gridHeight, pFindVacantPosition, pGameUpdatesMediator);
+		return new TwoPoint(pFindVacantPosition, pGameUpdatesMediator);
 	default:
 		break;
 	}

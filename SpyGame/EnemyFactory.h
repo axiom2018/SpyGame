@@ -23,7 +23,6 @@ Factory function to create enemies.
 class EnemyFactory
 {
 public:
-	static class Enemy * CreateEnemy(const int& choice, const int& gridWidth, const int& gridHeight, class FindVacantPosition * pFindVacantPosition, 
-		class GameUpdatesMediator * pGameUpdatesMediator);
+	static class Enemy * CreateEnemy(const int& choice, class FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator);
 };
 

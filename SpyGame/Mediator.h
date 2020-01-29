@@ -62,10 +62,12 @@ class Mediator
 public:
 	virtual void Register(class Colleague * pColleague) = 0;
 	virtual void Unregister(class Colleague * pColleague) = 0;
-	virtual std::pair<int, int> ReceiveCoordinates(class Colleague * pColleague) = 0;
+	virtual std::pair<int, int> ReceiveCoordinates() = 0;
 	virtual bool PlaceWall(const int& x, const int& y) const = 0;
 	virtual bool IsWallHere(const int& x, const int& y) const = 0;
 	virtual bool IsLevelTargetHere(const int& x, const int& y) const = 0;
 	virtual bool ResetWallCoordinate(const int& x, const int& y) const = 0;
 	virtual Node * GetGrid() const = 0;
+	// Testing function for getting the width and height of grid for other entities to use.
+	virtual std::pair<int, int> GetWidthAndHeightOfGrid() const = 0;
 };

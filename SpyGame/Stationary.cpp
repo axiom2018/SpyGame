@@ -6,7 +6,7 @@
 #include "Node.h"
 #include <iostream>
 
-Stationary::Stationary(const int& gridWidth, const int& gridHeight, FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator)
+Stationary::Stationary(FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator)
 {
 	// Save the find vacant position pointer.
 	m_pFindVacantPosition = pFindVacantPosition;
@@ -18,10 +18,10 @@ Stationary::Stationary(const int& gridWidth, const int& gridHeight, FindVacantPo
 	m_pDirectionalSystem = new DirectionalSystem(&m_x, &m_y);
 
 	// Allocate for adjusting direction.
-	m_pAdjustDirection = new AdjustDirection(gridWidth, gridHeight, &m_x, &m_y, m_pDirectionalSystem->GetChar());
+	m_pAdjustDirection = new AdjustDirection(pGameUpdatesMediator, &m_x, &m_y, m_pDirectionalSystem->GetChar());
 
 	// Allocate for line of sight so player can get caught.
-	m_pLineOfSight = new LineOfSight(m_pDirectionalSystem->GetChar(), gridWidth, gridHeight, &m_x, &m_y, k_sightDistance, pGameUpdatesMediator);
+	m_pLineOfSight = new LineOfSight(m_pDirectionalSystem->GetChar(), &m_x, &m_y, k_sightDistance, pGameUpdatesMediator);
 }
 
 bool Stationary::Draw(const int & x, const int & y)
@@ -42,10 +42,10 @@ void Stationary::ResetEnemyData()
 	m_pFindVacantPosition->GetPositionOnGrid(&m_x, &m_y);
 
 	// Update adjustment direction.
-	m_pAdjustDirection->UpdateDimensions(m_pFindVacantPosition->GetWidth(), m_pFindVacantPosition->GetHeight());
+	m_pAdjustDirection->SetDimensionsAndEdgeCheck();
 
 	// Update line of sight so player can get caught.
-	m_pLineOfSight->UpdateDimensions(m_pFindVacantPosition->GetWidth(), m_pFindVacantPosition->GetHeight());
+	m_pLineOfSight->UpdateDimensions();
 
 	// Update the directional system.
 	m_pDirectionalSystem->UpdateCurrentXAndY();

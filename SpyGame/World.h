@@ -192,6 +192,7 @@ public:
 	virtual bool IsLevelTargetAtPosition(const int& x, const int& y) const override;
 	virtual bool ResetWallAtPosition(const int& x, const int& y) const override;
 	virtual Node * Get2DGrid() const override;
+	virtual std::pair<int, int> GetGridWidthAndHeight() const override;
 	void Delete();
 };
 

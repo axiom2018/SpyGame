@@ -7,12 +7,11 @@
 #include "FindVacantPosition.h"
 #include "Node.h"
 
-EnemyManager::EnemyManager(const int& gridWidth, const int& gridHeight, int totalLevels, class GameUpdatesMediator * pGameUpdatesMediator, 
-	FindVacantPosition * pFindVacantPosition)
+EnemyManager::EnemyManager(const int& totalLevels, class GameUpdatesMediator * pGameUpdatesMediator, FindVacantPosition * pFindVacantPosition)
 {
 	// Save the width and the height so we can successfully pass to enemies so they can pick a random board position.
-	m_gridWidth = gridWidth;
-	m_gridHeight = gridHeight;
+	// m_gridWidth = gridWidth;
+	// m_gridHeight = gridHeight;
 
 	// Set the minimum to a constant value. We'll say 2.
 	m_minStartingEnemies = 2;
@@ -29,28 +28,27 @@ EnemyManager::EnemyManager(const int& gridWidth, const int& gridHeight, int tota
 	// Save total levels to help with object pool.
 	m_totalLevels = totalLevels;
 
-
-	/* We'll now create enemies and immediately throw them into the object pool. Why? Let's say we have 4 levels to play. then that means we'll have 5 enemies to use in total.
-	Level 1 will start with 2 enemies, player beats level 1 and we send the 2 enemies back into the pool (back to 5). For level 2, we'll get one plus the last amount, so 3.
-	We pick at random any 3 enemies and put them in the level and player beats it again, 3 enemies back into the pool. Now we're on level 3. So we'll ask for 4 random enemies,
-	get them, put them on the grid, player beats the level, send them back into the pool. Now it's level 4, we get all 5 and place them on the grid. This makes use of the 
-	object pool in an efficient manner and allows us to recycle objects and technically still have new ones there we didn't initially have. That's why the following for loop
-	works so well, if the total level for the game is 2, we'll have 3 enemies (2 enemies for level 1, then use all 3 for the final level). Same concept if we had 3 levels
-	to play, 4, 5, etc. */
+	/* We'll now create enemies and immediately throw them into the object pool. Why? Let's say we have 4 levels to play. then that means we'll have 5 enemies
+	to use in total. Level 1 will start with 2 enemies, player beats level 1 and we send the 2 enemies back into the pool (back to 5). For level 2, we'll get
+	one plus the last amount, so 3. We pick at random any 3 enemies and put them in the level and player beats it again, 3 enemies back into the pool. Now
+	we're on level 3. So we'll ask for 4 random enemies, get them, put them on the grid, player beats the level, send them back into the pool. Now it's level
+	4, we get all 5 and place them on the grid. This makes use of the object pool in an efficient manner and allows us to recycle objects and technically
+	still have new ones there we didn't initially have. That's why the following for loop works so well, if the total level for the game is 2, we'll have 3 
+	enemies (2 enemies for level 1, then use all 3 for the final level). Same concept if we had 3 levels to play, 4, 5, etc. */
 	for (int i = 0; i < m_totalLevels + 1; ++i)
 	{
 		// Get a random value between how many enemies we have in the Enemy.cpp, right now just 3, so 0-2.
 		int randVal = 0 + (rand() % 3);
 
 		// Add an enemy, from the factory, to the object pool.
-		m_pEnemyObjectPool->ReturnEnemy(EnemyFactory::CreateEnemy(randVal, gridWidth, gridHeight, m_pFindVacantPosition, pGameUpdatesMediator));
+		m_pEnemyObjectPool->ReturnEnemy(EnemyFactory::CreateEnemy(randVal,  m_pFindVacantPosition, pGameUpdatesMediator));
 	}
 
 	// Push the default beginning value of enemies (2) into the queue.
 	for (int i = 0; i < 2; ++i)
 	{
-		/* Getting an enemy will never result in nullptr being returned because even if we're only doing ONE level, it'll produce the minimum 2 enemies for the one and only 
-		level. If we're doing 2 levels. 2 + 1 = 3, we'll have 3 enemies in total and still only take 2 out in this point in the code. */
+		/* Getting an enemy will never result in nullptr being returned because even if we're only doing ONE level, it'll produce the minimum 2 enemies
+		for the one and only level. If we're doing 2 levels. 2 + 1 = 3, we'll have 3 enemies in total and still only take 2 out in this point in the code. */
 		m_pEnemyQueueLinkedList->Enqueue(m_pEnemyObjectPool->GetEnemy());
 	}
 }
@@ -79,7 +77,7 @@ void EnemyManager::SendEnemiesToPool()
 	}
 }
 
-void EnemyManager::GetEnemiesFromPool(const int & gridWidth, const int & gridHeight)
+void EnemyManager::GetEnemiesFromPool()
 {
 	// Loop, get the maximum enemies for a level, that's 3.
 	for (int i = 0; i < m_minStartingEnemies; ++i)

@@ -5,9 +5,7 @@
 #include <conio.h>
 
 // Set the grid width and height so proper calculations can occur for the blocks in a certain space.
-BlockManager::BlockManager(const int& gridWidth, const int& gridHeight, class GameUpdatesMediator * pGameUpdatesMediator) :
-	m_gridWidth(gridWidth),
-	m_gridHeight(gridHeight),
+BlockManager::BlockManager(class GameUpdatesMediator * pGameUpdatesMediator) :
 	m_canPaint(false)
 {
 	// Set mediator.
@@ -16,6 +14,11 @@ BlockManager::BlockManager(const int& gridWidth, const int& gridHeight, class Ga
 	// Register with mediator.
 	m_pGameUpdatesMediator->Register(this);
 
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
+	
 	// Assign the coordinates to create the blocks.
 	AssignCoordinates();
 
@@ -185,8 +188,8 @@ bool BlockManager::XCheck(const Coordinate& startingPos, const Coordinate& diagP
 		CanPaintWalls(start);
 	}
 
-	/* We CANNOT just call YCheck for this and pass it arguments and the same wiht calling XCheck from Y check because we'll create a loop that will go into a nullptr memory
-	crash. So to make it work, we just copy the YCheck code down here to check the edges around the square we're building. */
+	/* We CANNOT just call YCheck for this and pass it arguments and the same wiht calling XCheck from Y check because we'll create a loop that
+	will go into a nullptr memory crash. So to make it work, we just copy the YCheck code down here to check the edges around the square we're building. */
 	while (start.m_y < diagPos.m_y)
 	{
 		// Increment down.
@@ -254,9 +257,6 @@ void BlockManager::FillInsideOfBlock(const Coordinate& startingPoint, Coordinate
 	// Decrement other diagonal variable too.
 	m_innerDiagonal.m_x -= 1;
 	m_innerDiagonal.m_y -= 1;
-
-	// std::cout << "Inner start. X: " << m_innerStart.m_x << " Y: " << m_innerStart.m_y << "\n";
-	// std::cout << "Inner diagonal. X: " << m_innerDiagonal.m_x << " Y: " << m_innerDiagonal.m_y << "\n";
 
 	// Alter the diagonal to fit the proper position it needs to stop at.
 	pDiagonalPos->m_x -= 1;
@@ -354,8 +354,6 @@ void BlockManager::GenerateBlocks()
 			continue;
 		}
 
-		// std::cout << "Starting point. X: " << m_ranCoord.m_x << " Y: " << m_ranCoord.m_y << "\n";
-
 		// Flip the boolean value to true, now we can revisit the same positions in the algorithm from X/YCheck and start painting the board.
 		SetCanPaint();
 
@@ -371,9 +369,6 @@ void BlockManager::GenerateBlocks()
 
 		// Increment current blocks to continue algorithm.
 		++currentBlocks;
-
-		// Pop the coords vector if not empty.
-		/*m_coords.erase(m_coords.begin());*/
 
 		while (m_innerStart.m_y <= m_innerDiagonal.m_y)
 		{
@@ -395,16 +390,15 @@ void BlockManager::GenerateBlocks()
 			m_innerStart.m_x += 1;
 		}
 
-		// std::cout << "\n";
-
 	} while (currentBlocks != maxBlocks);
 }
 
-void BlockManager::CreateNewBlocks(const int& gridWidth, const int& gridHeight)
+void BlockManager::CreateNewBlocks()
 {
-	// Set new width and height.
-	m_gridWidth = gridWidth;
-	m_gridHeight = gridHeight;
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
 
 	// Assign the new coordinates.
 	AssignCoordinates();

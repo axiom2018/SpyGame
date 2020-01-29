@@ -137,9 +137,6 @@ private:
 	Coordinate m_innerStartingPoint;
 	Coordinate m_ranCoord;
 
-	std::vector<std::pair<int, int>> m_coords;
-	int m_index;
-
 	void CanPaintWalls(const Coordinate& point);
 	bool YCheck(const Coordinate& startingPos, const Coordinate& diagPos);
 	bool XCheck(const Coordinate& startingPos, const Coordinate& diagPos);
@@ -150,7 +147,7 @@ private:
 	void GenerateBlocks();
 	void AssignCoordinates();
 public:
-	BlockManager(const int& gridWidth, const int& gridHeight, class GameUpdatesMediator * pGameUpdatesMediator);
-	void CreateNewBlocks(const int& gridWidth, const int& gridHeight);
+	BlockManager(class GameUpdatesMediator * pGameUpdatesMediator);
+	void CreateNewBlocks();
 };
 

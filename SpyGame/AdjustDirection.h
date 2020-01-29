@@ -1,4 +1,5 @@
 #pragma once
+#include "Colleague.h"
 
 /* Reasoning for this class:
 
@@ -40,7 +41,7 @@ Be able to determine whether an enemy is too close to any edges, north, west, ea
 
 */
 
-class AdjustDirection
+class AdjustDirection : public Colleague
 {
 private:
 	int m_gridWidth;
@@ -51,7 +52,8 @@ private:
 
 	void EdgeCheck();
 public:
-	AdjustDirection(const int& width, const int& height, int * pX, int *pY, char * pEnemyChar);
-	void UpdateDimensions(const int& width, const int& height);
+	AdjustDirection(class GameUpdatesMediator * pGameUpdatesMediator, int * pX, int *pY, char * pEnemyChar);
+	// void UpdateDimensions(const int& width, const int& height);
+	void SetDimensionsAndEdgeCheck();
 };
 

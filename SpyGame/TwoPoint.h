@@ -9,7 +9,7 @@ private:
 	int m_endPointY;
 	class AStar * m_pAStar;
 public:
-	TwoPoint(const int& gridWidth, const int& gridHeight, class FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * m_pGameUpdatesMediator);
+	TwoPoint(class FindVacantPosition * pFindVacantPosition, class GameUpdatesMediator * pGameUpdatesMediator);
 	virtual bool Draw(const int& x, const int& y) override;
 	virtual bool Update(const int& playerX, const int& playerY) override;
 	virtual void ResetEnemyData() override;

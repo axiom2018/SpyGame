@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include <iostream>
 
-AStar::AStar(const int& gridWidth, const int& gridHeight, const int& endX, const int& endY, int * pX, int * pY, GameUpdatesMediator * pGameUpdatesMediator)
+AStar::AStar(const int& endX, const int& endY, int * pX, int * pY, GameUpdatesMediator * pGameUpdatesMediator)
 {
 	// Initialize start and end nodes.
 	m_pStart = nullptr;
@@ -22,9 +22,10 @@ AStar::AStar(const int& gridWidth, const int& gridHeight, const int& endX, const
 	// Register this.
 	m_pGameUpdatesMediator->Register(this);
 
-	// Save width and height.
-	m_width = gridWidth;
-	m_height = gridHeight;
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_width = size.first;
+	m_height = size.second;
 
 	// Assign nodes with proper x and y coordinates.
 	SetNodesAndSolve(endX, endY);
@@ -158,18 +159,17 @@ void AStar::SetNodesAndSolve(const int & endX, const int & endY)
 
 	// Solve A star.
 	SolveAStar(&m_coordinates);
-
-	std::cout << "\n";
 }
 
-void AStar::ResetPath(const int& endX, const int& endY, const int& gridWidth, const int& gridHeight)
+void AStar::ResetPath(const int& endX, const int& endY)
 {
 	// Clean out the coordinate vector.
 	m_coordinates.clear();
 
-	// Reset the grid width and height.
-	m_width = gridWidth;
-	m_height = gridHeight;
+	// Get the width and height of the grid we're working with.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_width = size.first;
+	m_height = size.second;
 
 	// Assign nodes with proper x and y coordinates.
 	SetNodesAndSolve(endX, endY);

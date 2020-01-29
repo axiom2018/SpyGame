@@ -1,12 +1,15 @@
 #include "AdjustDirection.h"
 #include "Constants.h"
+#include "GameUpdatesMediator.h"
 #include <iostream>
 
-AdjustDirection::AdjustDirection(const int& width, const int& height, int * pX, int *pY, char * pEnemyChar)
+AdjustDirection::AdjustDirection(class GameUpdatesMediator * pGameUpdatesMediator, int * pX, int *pY, char * pEnemyChar)
 {
-	// Set dimensions.
-	m_gridWidth = width;
-	m_gridHeight = height;
+	// Save the mediator.
+	m_pGameUpdatesMediator = pGameUpdatesMediator;
+
+	// Register with it.
+	m_pGameUpdatesMediator->Register(this);
 
 	// Set enemy position.
 	m_pX = pX;
@@ -15,8 +18,8 @@ AdjustDirection::AdjustDirection(const int& width, const int& height, int * pX, 
 	// Save the char.
 	m_pEnemyChar = pEnemyChar;
 
-	// Begin the edge check.
-	EdgeCheck();
+	// Begin setting width and height.
+	SetDimensionsAndEdgeCheck();
 }
 
 void AdjustDirection::EdgeCheck()
@@ -50,11 +53,12 @@ void AdjustDirection::EdgeCheck()
 	}
 }
 
-void AdjustDirection::UpdateDimensions(const int& width, const int& height)
+void AdjustDirection::SetDimensionsAndEdgeCheck()
 {
-	// Set dimensions.
-	m_gridWidth = width;
-	m_gridHeight = height;
+	// Set the width and height through mediator.
+	std::pair<int, int> size = m_pGameUpdatesMediator->GetWidthAndHeightOfGrid();
+	m_gridWidth = size.first;
+	m_gridHeight = size.second;
 
 	// Begin edge check.
 	EdgeCheck();
